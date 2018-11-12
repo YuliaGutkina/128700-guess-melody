@@ -1,7 +1,7 @@
 # Личный проект «Угадай мелодию» [![Build status][travis-image]][travis-url]
 
 * Студент: [Юлия Гуткина](https://up.htmlacademy.ru/ecmascript/7/user/128700).
-* Наставник: `Неизвестно`.
+* Наставник: `-`.
 
 ---
 
