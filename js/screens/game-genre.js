@@ -90,11 +90,11 @@ submitBtn.addEventListener(`click`, () => {
 
 const checkboxes = Array.from(gameGenre.querySelectorAll(`.game__input`));
 
-checkboxes.forEach((item) => {
+for (const item of checkboxes) {
   item.addEventListener(`change`, () => {
     submitBtn.disabled = !checkboxes.some((i) => i.checked);
   });
-});
+}
 
 const backBtn = gameGenre.querySelector(`.game__back`);
 
