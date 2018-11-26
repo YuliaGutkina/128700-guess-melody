@@ -1,6 +1,6 @@
 import changeScreen from "./utils/change-screen";
-import welcome from "./screens/welcome";
+import welcomeScreen from "./screens/welcome-screen";
 
-changeScreen(welcome);
+changeScreen(welcomeScreen);
 
 

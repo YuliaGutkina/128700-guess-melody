@@ -2,7 +2,7 @@
   "name": "GuessMelody",
   "version": "5.0.0",
   "private": true,
-  "description": "Личный проект «Угадай мелодию» от HTML Academy",
+  "text": "Личный проект «Угадай мелодию» от HTML Academy",
   "scripts": {
     "eslint": "eslint ./gulpfile.js js/",
     "stylelint": "stylelint 'sass/**/*.scss' --syntax scss",
