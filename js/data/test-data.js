@@ -37,7 +37,7 @@ const data = [
   {
     artist: `Quincas Moreira`,
     name: `Firefly`,
-    image: `http://www.atribuna.com.br/fileadmin/_processed_/csm_Quincas-Moreira-Foto-Divulgacao_76d1a8b00e.jpg`,
+    image: `https://a3-images.myspacecdn.com/images03/20/96fd3b26a5db4687a94cfaf9aff762fc/300x300.jpg`,
     src: `https://www.youtube.com/audiolibrary_download?vid=79100e44c826e2f7`,
     genre: `Electronic`
   }

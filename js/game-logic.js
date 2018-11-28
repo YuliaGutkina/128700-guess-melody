@@ -4,11 +4,11 @@ export const INITIAL_GAME = Object.freeze({
   time: 0
 });
 
-export const changeLevel = (game, level) => {
-  return Object.assign({}, game, {
-    level
-  });
-};
+// export const changeLevelScreen = (game, level) => {
+//   return Object.assign({}, game, {
+//     level
+//   });
+// };
 
 export const canContinue = (game) => game.lives - 1 > 0;
 
