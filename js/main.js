@@ -4,7 +4,7 @@ import GameView from "./screens/game-view";
 import {INITIAL_GAME} from "./game-logic";
 import LevelView from "./screens/level-view";
 import {gameResults, levels} from "./data/game-data";
-import changeLevelScreen from "./change-level-screen";
+import changeLevelScreen from "./utils/change-level-screen";
 import ResultsView from "./screens/results-view";
 
 const welcomeView = new WelcomeView();
