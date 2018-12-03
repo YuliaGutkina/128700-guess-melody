@@ -10,10 +10,10 @@ export const changeLevel = (game, level) => {
   });
 };
 
-export const canContinue = (game) => game.lives - 1 > 0;
+export const stillAlive = (game) => game.lives - 1 > 0;
 
 export const die = (game) => {
-  if (!canContinue(game)) {
+  if (!stillAlive(game)) {
     throw new Error(`You can't continue anymore`);
   }
 
@@ -23,3 +23,18 @@ export const die = (game) => {
     lives
   });
 };
+
+export const haveTime = (game) => game.time < 300;
+
+export const tick = (game) => {
+  if (!haveTime(game)) {
+    throw new Error(`Time is over`);
+  }
+
+  const time = game.time + 1;
+
+  return Object.assign({}, game, {
+    time
+  });
+};
+

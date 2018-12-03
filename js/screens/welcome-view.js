@@ -1,8 +1,12 @@
-import getElementFromTemplate from "../utils/get-element-from-template";
-import changeScreen from "../utils/change-screen";
-import gameScreen from "./game-screen";
+import AbstractView from "../abstract-view";
 
-const welcomeScreenTemplate = `<section class="welcome">
+export default class WelcomeView extends AbstractView {
+  constructor() {
+    super();
+  }
+
+  get template() {
+    return `<section class="welcome">
     <div class="welcome__logo"><img src="img/melody-logo.png" alt="Угадай мелодию" width="186" height="83"></div>
     <button class="welcome__button"><span class="visually-hidden">Начать игру</span></button>
     <h2 class="welcome__rules-title">Правила игры</h2>
@@ -13,13 +17,12 @@ const welcomeScreenTemplate = `<section class="welcome">
     </ul>
     <p class="welcome__text">Удачи!</p>
   </section>`;
+  }
 
-const welcomeScreen = getElementFromTemplate(welcomeScreenTemplate);
+  onPlay() {}
 
-const playBtn = welcomeScreen.querySelector(`.welcome__button`);
-
-playBtn.addEventListener(`click`, () => {
-  changeScreen(gameScreen);
-});
-
-export default welcomeScreen;
+  bind() {
+    this._playBtn = this.element.querySelector(`.welcome__button`);
+    this._playBtn.addEventListener(`click`, this.onPlay);
+  }
+}

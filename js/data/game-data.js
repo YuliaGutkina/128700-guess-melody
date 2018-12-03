@@ -2,6 +2,12 @@ import data from "./test-data";
 
 export const levels = [
   {
+    type: `artist`,
+    title: `Кто исполняет эту песню?`,
+    correctAnswer: data[1],
+    answers: [data[0], data[1], data[2]]
+  },
+  {
     type: `genre`,
     title: `Выберите инди-рок треки`,
     correctAnswer: data[1],
@@ -10,9 +16,51 @@ export const levels = [
   {
     type: `artist`,
     title: `Кто исполняет эту песню?`,
-    correctAnswer: data[1],
-    answers: [data[0], data[1], data[2]]
-  }
+    correctAnswer: data[5],
+    answers: [data[5], data[2], data[4]]
+  },
+  // {
+  //   type: `artist`,
+  //   title: `Кто исполняет эту песню?`,
+  //   correctAnswer: data[3],
+  //   answers: [data[1], data[2], data[3]]
+  // },
+  // {
+  //   type: `genre`,
+  //   title: `Выберите джаз треки`,
+  //   correctAnswer: data[0],
+  //   answers: [data[0], data[5], data[2], data[4]]
+  // },
+  // {
+  //   type: `artist`,
+  //   title: `Кто исполняет эту песню?`,
+  //   correctAnswer: data[2],
+  //   answers: [data[5], data[2], data[0]]
+  // },
+  // {
+  //   type: `genre`,
+  //   title: `Выберите R&B треки`,
+  //   correctAnswer: data[3],
+  //   answers: [data[5], data[2], data[1], data[3]]
+  // },
+  // {
+  //   type: `genre`,
+  //   title: `Выберите поп треки`,
+  //   correctAnswer: data[4],
+  //   answers: [data[4], data[1], data[5], data[0]]
+  // },
+  // {
+  //   type: `artist`,
+  //   title: `Кто исполняет эту песню?`,
+  //   correctAnswer: data[0],
+  //   answers: [data[5], data[4], data[0]]
+  // },
+  // {
+  //   type: `artist`,
+  //   title: `Кто исполняет эту песню?`,
+  //   correctAnswer: data[4],
+  //   answers: [data[4], data[0], data[5]]
+  // },
 ];
 
 export const statistics = [
