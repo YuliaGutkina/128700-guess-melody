@@ -1,6 +1,6 @@
 import data from "./test-data";
 
-export const levels = [
+export const LEVELS = [
   {
     type: `artist`,
     title: `Кто исполняет эту песню?`,

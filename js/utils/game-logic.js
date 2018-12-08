@@ -24,7 +24,7 @@ export const die = (game) => {
   });
 };
 
-export const haveTime = (game) => game.time < 300;
+export const haveTime = (game) => game.time <= 300;
 
 export const tick = (game) => {
   if (!haveTime(game)) {
