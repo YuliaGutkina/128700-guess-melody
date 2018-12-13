@@ -24,5 +24,10 @@ export default class WelcomeView extends AbstractView {
   bind() {
     this._playBtn = this.element.querySelector(`.welcome__button`);
     this._playBtn.addEventListener(`click`, this.onPlay);
+    // this.showLoader = () => {
+    //   this._loader = document.createElement(`div`);
+    //   this._loader.classList.add(`welcome__loader`);
+    //   this.element.replaceChild(this._loader, this._playBtn);
+    // };
   }
 }

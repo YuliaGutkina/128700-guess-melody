@@ -61,8 +61,6 @@ export default class GamePresenter {
     }
   }
 
-  // replay() {}
-
   updateHeader() {
     const header = new HeaderView(this.model.state);
     header.onReplay = App.showWelcome;
@@ -76,7 +74,7 @@ export default class GamePresenter {
     const level = new LevelView(this.model.getCurrentLevel());
     // level.onAnswer = this.answer.bind(this);
     level.onAnswer = () => {
-      this.answer({isCorrect: false, time: 20});
+      this.answer({isCorrect: true, time: 20});
     };
     this.game.replaceChild(level.element, this.level.element);
     this.level = level;

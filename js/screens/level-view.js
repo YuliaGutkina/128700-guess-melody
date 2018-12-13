@@ -8,7 +8,10 @@ export default class LevelView extends AbstractView {
   }
 
   get template() {
-    const questionGenre = `<form class="game__tracks">
+    let question;
+    switch (this.level.type) {
+      case `genre`: {
+        question = `<form class="game__tracks">
       ${(this.level.answers).map((answer, i) => `<div class="track">
           <button class="track__button track__button--play" type="button"></button>
           <div class="track__status">
@@ -22,25 +25,31 @@ export default class LevelView extends AbstractView {
 
         <button class="game__submit button" type="submit">Ответить</button>
       </form>`;
-    const questionArtist = `<div class="game__track">
+        break;
+      }
+      case `artist`: {
+        question = `<div class="game__track">
         <button class="track__button track__button--play" type="button"></button>
-        <audio src="${this.level.correctAnswer.src}"></audio>
+        <audio src="${this.level.src}"></audio>
       </div>
 
       <form class="game__artist">
         ${(this.level.answers).map((answer, i) => `<div class="artist">
           <input class="artist__input visually-hidden" type="radio" name="answer" value="artist-${i}" id="answer-${i}">
           <label class="artist__name" for="answer-${i}">
-            <img class="artist__picture" src="${answer.image}" alt="${answer.artist}">
-            ${answer.artist}
+            <img class="artist__picture" src="${answer.image.url}" alt="${answer.title}">
+            ${answer.title}
           </label>
         </div>`).join(``)}
-        
+
       </form>`;
+        break;
+      }
+    }
 
     return `<section class="game__screen">
-      <h2 class="game__title">${this.level.title}</h2>
-      ${(this.level.type === `genre`) ? questionGenre : questionArtist}
+      <h2 class="game__title">${this.level.question}</h2>
+      ${question}
     </section>`;
   }
 
@@ -64,7 +73,6 @@ export default class LevelView extends AbstractView {
       }
 
       this._submitBtn.addEventListener(`click`, (e) => {
-        // this.checkedItems = this.level.answers.filter((item, i) => this._checkboxes[i].checked);
         e.preventDefault();
         this.onAnswer();
       });
