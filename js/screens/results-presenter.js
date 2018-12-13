@@ -1,6 +1,6 @@
 import App from "../app";
 import ResultsView from "./results-view";
-import {gameResults} from "../data/game-data";
+import {GameResults} from "../data/game-data";
 
 export default class ResultsPresenter {
   constructor() {
@@ -8,7 +8,7 @@ export default class ResultsPresenter {
   }
 
   get element() {
-    const results = new ResultsView(gameResults.failTries);
+    const results = new ResultsView(GameResults.failTries);
     results.onReplay = App.showGame;
     return results.element;
   }

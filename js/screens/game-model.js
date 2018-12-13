@@ -1,10 +1,8 @@
-import {LEVELS} from "../data/game-data";
 import {changeLevel, die, INITIAL_GAME, tick} from "../utils/game-logic";
 
-const getLevel = (state) => LEVELS[state.level];
-
 export default class GameModel {
-  constructor() {
+  constructor(data) {
+    this.data = data;
     this.start();
   }
 
@@ -13,7 +11,7 @@ export default class GameModel {
   }
 
   hasNextLevel() {
-    return this._state.level + 1 < LEVELS.length;
+    return this._state.level + 1 < this.data.length;
   }
 
   nextLevel() {
@@ -37,7 +35,7 @@ export default class GameModel {
   }
 
   getCurrentLevel() {
-    return getLevel(this._state);
+    return this.data[this._state.level];
   }
 
   tick() {
