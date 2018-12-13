@@ -1,4 +1,5 @@
 import AbstractView from "../abstract-view";
+import addPlayer from "../utils/add-player";
 
 export default class LevelView extends AbstractView {
   constructor(level) {
@@ -7,7 +8,7 @@ export default class LevelView extends AbstractView {
   }
 
   get template() {
-    const levelGenre = `<form class="game__tracks">
+    const questionGenre = `<form class="game__tracks">
       ${(this.level.answers).map((answer, i) => `<div class="track">
           <button class="track__button track__button--play" type="button"></button>
           <div class="track__status">
@@ -21,7 +22,7 @@ export default class LevelView extends AbstractView {
 
         <button class="game__submit button" type="submit">Ответить</button>
       </form>`;
-    const levelArtist = `<div class="game__track">
+    const questionArtist = `<div class="game__track">
         <button class="track__button track__button--play" type="button"></button>
         <audio src="${this.level.correctAnswer.src}"></audio>
       </div>
@@ -39,31 +40,45 @@ export default class LevelView extends AbstractView {
 
     return `<section class="game__screen">
       <h2 class="game__title">${this.level.title}</h2>
-      ${(this.level.type === `genre`) ? levelGenre : levelArtist}
+      ${(this.level.type === `genre`) ? questionGenre : questionArtist}
     </section>`;
   }
 
-  onSubmit() {}
+  onAnswer() {}
 
   bind() {
     if (this.level.type === `genre`) {
       this._submitBtn = this.element.querySelector(`.game__submit`);
       this._submitBtn.disabled = true;
       this._checkboxes = Array.from(this.element.querySelectorAll(`.game__input`));
+      this._tracks = Array.from(this.element.querySelectorAll(`.track`));
 
       for (const item of this._checkboxes) {
         item.addEventListener(`change`, () => {
           this._submitBtn.disabled = !this._checkboxes.some((i) => i.checked);
         });
       }
+
+      for (const track of this._tracks) {
+        addPlayer(track);
+      }
+
+      this._submitBtn.addEventListener(`click`, (e) => {
+        // this.checkedItems = this.level.answers.filter((item, i) => this._checkboxes[i].checked);
+        e.preventDefault();
+        this.onAnswer();
+      });
+
     } else {
       this._submitBtn = this.element.querySelector(`.game__artist`);
-    }
+      this._track = this.element.querySelector(`.game__track`);
 
-    this._submitBtn.addEventListener(`click`, (e) => {
-      e.preventDefault();
-      this.onSubmit();
-    });
+      addPlayer(this._track);
+
+      this._submitBtn.addEventListener(`click`, () => {
+        this.onAnswer();
+      });
+    }
   }
 }
 

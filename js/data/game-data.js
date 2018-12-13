@@ -1,6 +1,6 @@
 import data from "./test-data";
 
-export const levels = [
+export const LEVELS = [
   {
     type: `artist`,
     title: `Кто исполняет эту песню?`,
@@ -10,7 +10,7 @@ export const levels = [
   {
     type: `genre`,
     title: `Выберите инди-рок треки`,
-    correctAnswer: data[1],
+    correctAnswer: [data[1]],
     answers: [data[0], data[1], data[2], data[3]]
   },
   {
@@ -69,6 +69,12 @@ export const statistics = [
   {score: 15, lives: 3, time: 100},
   {score: 4, lives: 1, time: 299}
 ];
+
+// export const Result = {
+//   DIE: 0,
+//   WIN: 1,
+//   NEXT_LEVEL: 2
+// };
 
 export const gameResults = {
   failTime: {

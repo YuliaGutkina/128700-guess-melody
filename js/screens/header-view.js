@@ -1,13 +1,13 @@
 import AbstractView from "../abstract-view";
 
-export default class GameView extends AbstractView {
+export default class HeaderView extends AbstractView {
   constructor(state) {
     super();
     this.state = state;
   }
 
   get template() {
-    const header = `<header class="game__header">
+    return `<header class="game__header">
         <a class="game__back" href="#">
           <span class="visually-hidden">Сыграть ещё раз</span>
           <img class="game__logo" src="img/melody-logo-ginger.png" alt="Угадай мелодию">
@@ -19,21 +19,15 @@ export default class GameView extends AbstractView {
         </svg>
   
         <div class="timer__value" xmlns="http://www.w3.org/1999/xhtml">
-          <span class="timer__mins">05</span>
-          <span class="timer__dots">:</span>
-          <span class="timer__secs">00</span>
+          <!--<span class="timer__mins">05</span>-->
+          <!--<span class="timer__dots">:</span>-->
+          <span class="timer__secs">${this.state.time}</span>
         </div>
   
         <div class="game__mistakes">
           ${new Array(3 - this.state.lives).fill(`<div class="wrong"></div>`).join(``)}
         </div>
       </header>`;
-
-    return `<section class="game">
-      ${header}
-      <section class="game__screen"></section>
-      <!-- screen -->
-    </section>`;
   }
 
   onReplay() {}
