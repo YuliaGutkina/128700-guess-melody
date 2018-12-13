@@ -13,11 +13,11 @@ export default class GameModel {
   }
 
   hasNextLevel() {
-    return getLevel(this._state.level + 1) !== void 0;
+    return this._state.level + 1 < LEVELS.length;
   }
 
   nextLevel() {
-    return changeLevel(this._state, this._state.level + 1);
+    this._state = changeLevel(this._state, this._state.level + 1);
   }
 
   die() {
@@ -29,11 +29,11 @@ export default class GameModel {
   }
 
   stillAlive() {
-    return this._state.lives - 1 > 0;
+    return this._state.lives > 0;
   }
 
   haveTime() {
-    return this._state.time <= 300;
+    return this._state.time < 300;
   }
 
   getCurrentLevel() {

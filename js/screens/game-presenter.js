@@ -1,8 +1,5 @@
 import HeaderView from "./header-view";
 import LevelView from "./level-view";
-import ResultsView from "./results-view";
-import {gameResults} from "../data/game-data";
-import changeScreen from "../utils/change-screen";
 import App from "../app";
 
 export default class GamePresenter {
@@ -27,9 +24,14 @@ export default class GamePresenter {
   }
 
   _tick() {
-    this.model.tick();
-    this.updateHeader();
-    this._timer = setTimeout(() => this._tick(), 1000);
+    if (!this.model.haveTime()) {
+      this.stopGame();
+      this.showResults();
+    } else {
+      this.model.tick();
+      this.updateHeader();
+      this._timer = setTimeout(() => this._tick(), 1000);
+    }
   }
 
   startGame() {
@@ -38,24 +40,26 @@ export default class GamePresenter {
     this._tick();
   }
 
-  // answer(answer) {
-  //   this.stopGame();
-  //   switch (answer.result) {
-  //     case Result.NEXT_LEVEL:
-  //       this.model.nextLevel();
-  //       this.startGame();
-  //       break;
-  //     case Result.DIE:
-  //       this.model.die();
-  //       this.endGame(false, !(this.model.isDead()));
-  //       break;
-  //     case Result.WIN:
-  //       this.endGame(true, false);
-  //       break;
-  //     default:
-  //       throw new Error(`Unknown result: ${answer.result}`);
-  //   }
-  // }
+  answer(answer) {
+    this.stopGame();
+    if (answer.isCorrect) {
+      if (this.model.hasNextLevel()) {
+        this.model.nextLevel();
+        this.startGame();
+      } else {
+        this.showResults();
+      }
+    } else {
+      this.model.die();
+      this.updateHeader();
+      if (!this.model.stillAlive()) {
+        this.showResults();
+      } else {
+        this.model.nextLevel();
+        this.startGame();
+      }
+    }
+  }
 
   // replay() {}
 
@@ -71,14 +75,14 @@ export default class GamePresenter {
 
     const level = new LevelView(this.model.getCurrentLevel());
     // level.onAnswer = this.answer.bind(this);
-    level.onAnswer = App.showResults;
+    level.onAnswer = () => {
+      this.answer({isCorrect: false, time: 20});
+    };
     this.game.replaceChild(level.element, this.level.element);
     this.level = level;
   }
 
   showResults() {
-    const results = new ResultsView(gameResults.success);
-    // results.onReplay = this.replay.bind(this);
-    changeScreen(results.element);
+    App.showResults();
   }
 }
