@@ -1,5 +1,6 @@
 import AbstractView from "../abstract-view";
 import addPlayer from "../utils/add-player";
+import {QuestionType} from "../data/game-data";
 
 export default class LevelView extends AbstractView {
   constructor(level) {
@@ -10,7 +11,7 @@ export default class LevelView extends AbstractView {
   get template() {
     let question;
     switch (this.level.type) {
-      case `genre`: {
+      case QuestionType.GENRE: {
         question = `<form class="game__tracks">
       ${(this.level.answers).map((answer, i) => `<div class="track">
           <button class="track__button track__button--play" type="button"></button>
@@ -27,7 +28,7 @@ export default class LevelView extends AbstractView {
       </form>`;
         break;
       }
-      case `artist`: {
+      case QuestionType.ARTIST: {
         question = `<div class="game__track">
         <button class="track__button track__button--play" type="button"></button>
         <audio src="${this.level.src}"></audio>
@@ -56,36 +57,44 @@ export default class LevelView extends AbstractView {
   onAnswer() {}
 
   bind() {
-    if (this.level.type === `genre`) {
-      this._submitBtn = this.element.querySelector(`.game__submit`);
-      this._submitBtn.disabled = true;
-      this._checkboxes = Array.from(this.element.querySelectorAll(`.game__input`));
-      this._tracks = Array.from(this.element.querySelectorAll(`.track`));
+    switch (this.level.type) {
+      case QuestionType.GENRE: {
+        this._submitBtn = this.element.querySelector(`.game__submit`);
+        this._submitBtn.disabled = true;
+        this._checkboxes = Array.from(this.element.querySelectorAll(`.game__input`));
+        this._tracks = Array.from(this.element.querySelectorAll(`.track`));
 
-      for (const item of this._checkboxes) {
-        item.addEventListener(`change`, () => {
-          this._submitBtn.disabled = !this._checkboxes.some((i) => i.checked);
+        for (const item of this._checkboxes) {
+          item.addEventListener(`change`, () => {
+            this._submitBtn.disabled = !this._checkboxes.some((i) => i.checked);
+          });
+        }
+
+        for (const track of this._tracks) {
+          addPlayer(track);
+        }
+
+        this._submitBtn.addEventListener(`click`, (e) => {
+          e.preventDefault();
+          this.answer = this._checkboxes.map((i) => i.checked);
+
+          this.onAnswer();
         });
+        break;
       }
+      case QuestionType.ARTIST: {
+        this._radioBtns = Array.from(this.element.querySelectorAll(`.artist__input`));
+        this._track = this.element.querySelector(`.game__track`);
 
-      for (const track of this._tracks) {
-        addPlayer(track);
+        addPlayer(this._track);
+
+        for (const radio of this._radioBtns) {
+          radio.addEventListener(`change`, () => {
+            this.answer = this._radioBtns.map((i) => i.checked);
+            this.onAnswer();
+          });
+        }
       }
-
-      this._submitBtn.addEventListener(`click`, (e) => {
-        e.preventDefault();
-        this.onAnswer();
-      });
-
-    } else {
-      this._submitBtn = this.element.querySelector(`.game__artist`);
-      this._track = this.element.querySelector(`.game__track`);
-
-      addPlayer(this._track);
-
-      this._submitBtn.addEventListener(`click`, () => {
-        this.onAnswer();
-      });
     }
   }
 }

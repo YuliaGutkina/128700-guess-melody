@@ -1,6 +1,7 @@
 import HeaderView from "./header-view";
 import LevelView from "./level-view";
 import App from "../app";
+import {QuestionType} from "../data/game-data";
 
 export default class GamePresenter {
   constructor(model) {
@@ -13,6 +14,7 @@ export default class GamePresenter {
     this.game.appendChild(this.level.element);
 
     this._timer = 0;
+    this._statistics = [];
   }
 
   get element() {
@@ -43,6 +45,7 @@ export default class GamePresenter {
   answer(answer) {
     this.stopGame();
     if (answer.isCorrect) {
+      this._statistics.push(answer.time);
       if (this.model.hasNextLevel()) {
         this.model.nextLevel();
         this.startGame();
@@ -51,6 +54,7 @@ export default class GamePresenter {
       }
     } else {
       this.model.die();
+      this._statistics.push(-1);
       this.updateHeader();
       if (!this.model.stillAlive()) {
         this.showResults();
@@ -72,9 +76,35 @@ export default class GamePresenter {
     this.updateHeader();
 
     const level = new LevelView(this.model.getCurrentLevel());
-    // level.onAnswer = this.answer.bind(this);
+    const startTime = this.model.state.time;
+
     level.onAnswer = () => {
-      this.answer({isCorrect: false, time: 20});
+      const stopTime = this.model.state.time;
+      const answerTime = stopTime - startTime;
+
+      const compareAnswers = (answer, correctAnswer) => {
+        return answer.every((item, i) => item === correctAnswer[i]);
+      };
+
+      const getCorrectAnswer = (levelQuestion) => {
+        switch (levelQuestion.type) {
+          case QuestionType.ARTIST: {
+            return levelQuestion.answers.map((i) => i.isCorrect);
+          }
+          case QuestionType.GENRE: {
+            const correctGenre = levelQuestion.genre;
+            return levelQuestion.answers.map((i) => i.genre === correctGenre);
+          }
+          default: {
+            return null;
+          }
+        }
+      };
+
+      const correctAnswer = getCorrectAnswer(this.model.getCurrentLevel());
+      const isAnswerCorrect = compareAnswers(level.answer, correctAnswer);
+
+      this.answer({isCorrect: isAnswerCorrect, time: answerTime});
     };
     this.game.replaceChild(level.element, this.level.element);
     this.level = level;
