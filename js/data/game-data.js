@@ -15,12 +15,12 @@
 //   ROCK: `rock`
 // };
 
-export const statistics = [
-  {score: 12, lives: 2, time: 250},
-  {score: 5, lives: 1, time: 200},
-  {score: 15, lives: 3, time: 100},
-  {score: 4, lives: 1, time: 299}
-];
+// export const statistics = [
+//   {score: 12, lives: 2, time: 250},
+//   {score: 5, lives: 1, time: 200},
+//   {score: 15, lives: 3, time: 100},
+//   {score: 4, lives: 1, time: 299}
+// ];
 
 export const GameResults = {
   failTime: {

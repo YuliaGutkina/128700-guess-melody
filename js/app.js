@@ -3,6 +3,7 @@ import GamePresenter from "./screens/game-presenter";
 import changeScreen from "./utils/change-screen";
 import WelcomePresenter from "./screens/welcome-presenter";
 import ResultsPresenter from "./screens/results-presenter";
+import ErrorView from "./screens/error-view";
 
 const checkStatus = (response) => {
   if (response.status >= 200 && response.status < 300) {
@@ -43,7 +44,8 @@ export default class App {
     changeScreen(results.element);
   }
 
-  static showError(error) {
-    throw new Error(error);
+  static showError(err) {
+    const error = new ErrorView(err);
+    changeScreen(error.element);
   }
 }
