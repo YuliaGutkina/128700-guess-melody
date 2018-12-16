@@ -111,6 +111,6 @@ export default class GamePresenter {
   }
 
   showResults() {
-    App.showResults();
+    App.showResults(this._statistics);
   }
 }
