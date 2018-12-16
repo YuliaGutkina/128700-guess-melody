@@ -27,7 +27,7 @@ export default class GameModel {
   }
 
   stillAlive() {
-    return this._state.lives > 0;
+    return this._state.lives >= 0;
   }
 
   haveTime() {

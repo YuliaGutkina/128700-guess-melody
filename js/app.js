@@ -3,14 +3,8 @@ import GamePresenter from "./screens/game-presenter";
 import changeScreen from "./utils/change-screen";
 import WelcomePresenter from "./screens/welcome-presenter";
 import ResultsPresenter from "./screens/results-presenter";
-
-const checkStatus = (response) => {
-  if (response.status >= 200 && response.status < 300) {
-    return response;
-  } else {
-    throw new Error(`${response.status}: ${response.statusText}`);
-  }
-};
+import ErrorView from "./screens/error-view";
+import Loader from "./loader";
 
 let gameData;
 
@@ -19,9 +13,7 @@ export default class App {
   static showWelcome() {
     const welcome = new WelcomePresenter();
     changeScreen(welcome.element);
-    window.fetch(`https://es.dump.academy/guess-melody/questions`)
-      .then(checkStatus)
-      .then((response) => response.json())
+    Loader.loadData()
       .then((data) => {
         gameData = data;
         return gameData;
@@ -38,12 +30,20 @@ export default class App {
     game.startGame();
   }
 
-  static showResults(/* stats */) {
+  static showResults(stats) {
     const results = new ResultsPresenter();
     changeScreen(results.element);
+    Loader.saveResults(stats)
+      .then(() => Loader.loadResults())
+      // .then((data) => scoreBoard.showScores(data))
+      // .then((data) => {
+      //   console.log(data);
+      // })
+      .catch(App.showError);
   }
 
-  static showError(error) {
-    throw new Error(error);
+  static showError(err) {
+    const error = new ErrorView(err);
+    changeScreen(error.element);
   }
 }

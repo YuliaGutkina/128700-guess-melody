@@ -49,11 +49,14 @@
   position: absolute;
   left: 330px;
   top: 430px;
+
   width: 120px;
   height: 120px;
+
   border: 15px solid $color-orange;
   border-radius: 50%;
   border-right-color: transparent;
+
   animation: spin 500ms linear infinite;
 }
 

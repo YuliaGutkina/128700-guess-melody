@@ -8,7 +8,7 @@ export default class ResultsPresenter {
   }
 
   get element() {
-    const results = new ResultsView(GameResults.failTries);
+    const results = new ResultsView(GameResults.FAIL_TRIES);
     results.onReplay = App.showGame;
     return results.element;
   }
