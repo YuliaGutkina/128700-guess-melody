@@ -2,6 +2,9 @@ import AbstractView from "../abstract-view";
 import addPlayer from "../utils/add-player";
 import {QuestionType} from "../data/game-data";
 
+const DEBUG = true;
+const DEBUG_STYLE = `style="background:green;"`;
+
 export default class LevelView extends AbstractView {
   constructor(level) {
     super();
@@ -13,7 +16,7 @@ export default class LevelView extends AbstractView {
     switch (this.level.type) {
       case QuestionType.GENRE: {
         question = `<form class="game__tracks">
-      ${(this.level.answers).map((answer, i) => `<div class="track">
+      ${(this.level.answers).map((answer, i) => `<div class="track" ${DEBUG && (answer.genre === this.level.genre) ? DEBUG_STYLE : ``}>
           <button class="track__button track__button--play" type="button"></button>
           <div class="track__status">
             <audio src="${answer.src}"></audio>
@@ -35,7 +38,7 @@ export default class LevelView extends AbstractView {
       </div>
 
       <form class="game__artist">
-        ${(this.level.answers).map((answer, i) => `<div class="artist">
+        ${(this.level.answers).map((answer, i) => `<div class="artist" ${DEBUG && (answer.isCorrect) ? DEBUG_STYLE : ``}>
           <input class="artist__input visually-hidden" type="radio" name="answer" value="artist-${i}" id="answer-${i}">
           <label class="artist__name" for="answer-${i}">
             <img class="artist__picture" src="${answer.image.url}" alt="${answer.title}">
