@@ -5,6 +5,7 @@ import WelcomePresenter from "./screens/welcome-presenter";
 import ResultsPresenter from "./screens/results-presenter";
 import ErrorView from "./screens/error-view";
 import Loader from "./loader";
+import {GameResults} from "./data/game-data";
 
 let gameData;
 
@@ -18,9 +19,9 @@ export default class App {
         gameData = data;
         return gameData;
       })
-      // .then(() => console.log(`show button`))
-      .catch((err) => App.showError(err));
-    // .then(() => console.log(`remove loader`));
+      .then(() => welcome.showLoader())
+      .catch((err) => App.showError(err))
+      .then(() => welcome.showStart());
   }
 
   static showGame() {
@@ -30,16 +31,24 @@ export default class App {
     game.startGame();
   }
 
-  static showResults(stats) {
-    const results = new ResultsPresenter();
-    changeScreen(results.element);
-    Loader.saveResults(stats)
-      .then(() => Loader.loadResults())
-      // .then((data) => scoreBoard.showScores(data))
-      // .then((data) => {
-      //   console.log(data);
-      // })
-      .catch(App.showError);
+  static showResults(stats, result) {
+    switch (result) {
+      case GameResults.FAIL_TIME:
+      case GameResults.FAIL_TRIES: {
+        const results = new ResultsPresenter(result);
+        changeScreen(results.element);
+        break;
+      }
+      case GameResults.SUCCESS: {
+        Loader.saveResults(stats)
+          .then(() => Loader.loadResults())
+          .then((data) => {
+            const results = new ResultsPresenter(GameResults.SUCCESS, stats, data);
+            changeScreen(results.element);
+          })
+          .catch(App.showError);
+      }
+    }
   }
 
   static showError(err) {

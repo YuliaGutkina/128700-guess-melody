@@ -1,5 +1,5 @@
 const SERVER_URL = `https://es.dump.academy/guess-melody/`;
-const APP_ID = 536121206;
+const APP_ID = 345215164;
 
 const checkStatus = (response) => {
   if (response.ok) {
@@ -25,7 +25,7 @@ export default class Loader {
   }
 
   static saveResults(data) {
-    data = Object.assign({}, {answers: data});
+    data = Object.assign({}, data);
     const requestSettings = {
       body: JSON.stringify(data),
       headers: {

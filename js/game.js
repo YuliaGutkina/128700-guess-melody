@@ -1,8 +1,11 @@
 export const INITIAL_GAME = Object.freeze({
   level: 0,
   lives: 3,
-  time: 0
+  time: 0,
 });
+
+export const GAME_TIME = 300;
+export const FINISH_TIME = 30;
 
 export const changeLevel = (game, level) => {
   return Object.assign({}, game, {

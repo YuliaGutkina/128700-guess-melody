@@ -1,4 +1,4 @@
-import AbstractView from "../abstract-view";
+import AbstractView from "../utils/abstract-view";
 
 export default class WelcomeView extends AbstractView {
   constructor() {
@@ -22,12 +22,9 @@ export default class WelcomeView extends AbstractView {
   onPlay() {}
 
   bind() {
-    this._playBtn = this.element.querySelector(`.welcome__button`);
-    this._playBtn.addEventListener(`click`, this.onPlay);
-    // this.showLoader = () => {
-    //   this._loader = document.createElement(`div`);
-    //   this._loader.classList.add(`welcome__loader`);
-    //   this.element.replaceChild(this._loader, this._playBtn);
-    // };
+    this.playBtn = this.element.querySelector(`.welcome__button`);
+    this.playBtn.addEventListener(`click`, this.onPlay);
+    this.loader = document.createElement(`div`);
+    this.loader.classList.add(`welcome__loader`);
   }
 }

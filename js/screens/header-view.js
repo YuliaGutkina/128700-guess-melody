@@ -1,4 +1,5 @@
-import AbstractView from "../abstract-view";
+import AbstractView from "../utils/abstract-view";
+import convertTime from "../utils/convert-time";
 
 export default class HeaderView extends AbstractView {
   constructor(state) {
@@ -7,6 +8,7 @@ export default class HeaderView extends AbstractView {
   }
 
   get template() {
+    const time = convertTime(this.state.time, true, true);
     return `<header class="game__header">
         <a class="game__back" href="#">
           <span class="visually-hidden">Сыграть ещё раз</span>
@@ -19,9 +21,9 @@ export default class HeaderView extends AbstractView {
         </svg>
   
         <div class="timer__value" xmlns="http://www.w3.org/1999/xhtml">
-          <!--<span class="timer__mins">05</span>-->
-          <!--<span class="timer__dots">:</span>-->
-          <span class="timer__secs">${this.state.time}</span>
+          <span class="timer__mins">${time.min}</span>
+          <span class="timer__dots">:</span>
+          <span class="timer__secs">${time.sec}</span>
         </div>
   
         <div class="game__mistakes">
@@ -35,5 +37,6 @@ export default class HeaderView extends AbstractView {
   bind() {
     this._replayBtn = this.element.querySelector(`.game__back`);
     this._replayBtn.addEventListener(`click`, this.onReplay);
+    this.timer = this.element.querySelector(`.timer__value`);
   }
 }
