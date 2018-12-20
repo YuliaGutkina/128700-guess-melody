@@ -7,11 +7,10 @@ const getResults = (result, stats, data) => {
     case GameResults.SUCCESS: {
       const statistics = data.map((i) => countScore(i.answers));
       const score = countScore(stats.answers);
-      statistics.push(score);
-      statistics.sort((a, b) => a - b);
-      const place = statistics.length - statistics.indexOf(score);
+      statistics.sort((a, b) => b - a);
+      const place = statistics.indexOf(score) + 1;
       const players = statistics.length;
-      const success = Math.round((statistics.indexOf(score) / players));
+      const success = Math.floor((players - place) / players * 100);
       const time = convertTime(stats.time);
       const quickAnswers = stats.answers.filter((i) => (i < 30 && i !== -1)).length;
       const mistakes = stats.answers.filter((i) => i === -1).length;

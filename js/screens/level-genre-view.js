@@ -1,4 +1,4 @@
-import AbstractView from "../abstract-view";
+import AbstractView from "../utils/abstract-view";
 import Player from "../utils/player";
 
 const DEBUG = true;

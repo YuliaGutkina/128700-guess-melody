@@ -1,4 +1,4 @@
-import AbstractView from "../abstract-view";
+import AbstractView from "../utils/abstract-view";
 import convertTime from "../utils/convert-time";
 
 export default class HeaderView extends AbstractView {

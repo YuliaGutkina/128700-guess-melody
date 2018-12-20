@@ -9,11 +9,9 @@ export default class GamePresenter {
   constructor(model) {
     this.model = model;
     this.header = new HeaderView(this.model.state);
-    this.level = new LevelGenreView(this.model.getCurrentLevel());
     this.game = document.createElement(`section`);
     this.game.classList.add(`game`);
     this.game.appendChild(this.header.element);
-    this.game.appendChild(this.level.element);
 
     this._timer = 0;
     this._statistics = [];
@@ -23,17 +21,17 @@ export default class GamePresenter {
     return this.game;
   }
 
-  stopGame() {
+  _stopGame() {
     clearInterval(this._timer);
   }
 
   _tick() {
     if (!this.model.haveTime()) {
-      this.stopGame();
-      this.showResults(GameResults.FAIL_TIME);
+      this._stopGame();
+      this._showResults(GameResults.FAIL_TIME);
     } else {
       this.model.tick();
-      this.updateHeader();
+      this._updateHeader();
       if (this.model.timeIsFinishing()) {
         this.header.timer.classList.add(`timer__value--finished`);
       }
@@ -42,27 +40,27 @@ export default class GamePresenter {
   }
 
   startGame() {
-    this.changeLevel();
+    this._showLevel();
 
     this._tick();
   }
 
-  answer(answer) {
-    this.stopGame();
+  _answer(answer) {
+    this._stopGame();
     if (answer.isCorrect) {
       this._statistics.push(answer.time);
       if (this.model.hasNextLevel()) {
         this.model.nextLevel();
         this.startGame();
       } else {
-        this.showResults(GameResults.SUCCESS);
+        this._showResults(GameResults.SUCCESS);
       }
     } else {
       this.model.die();
       this._statistics.push(-1);
-      this.updateHeader();
+      this._updateHeader();
       if (!this.model.stillAlive()) {
-        this.showResults(GameResults.FAIL_TRIES);
+        this._showResults(GameResults.FAIL_TRIES);
       } else {
         this.model.nextLevel();
         this.startGame();
@@ -70,45 +68,50 @@ export default class GamePresenter {
     }
   }
 
-  updateHeader() {
+  _updateHeader() {
     const header = new HeaderView(this.model.state);
     header.onReplay = App.showWelcome;
     this.game.replaceChild(header.element, this.header.element);
     this.header = header;
   }
 
-  changeLevel() {
-    this.updateHeader();
+  _showLevel() {
+    this._updateHeader();
 
-    const levelType = this.model.getCurrentLevel().type;
+    const levelType = this.model.currentLevel.type;
 
     let level;
 
     switch (levelType) {
       case LevelType.GENRE: {
-        level = new LevelGenreView(this.model.getCurrentLevel());
+        level = new LevelGenreView(this.model.currentLevel);
         break;
       }
       case LevelType.ARTIST: {
-        level = new LevelArtistView(this.model.getCurrentLevel());
+        level = new LevelArtistView(this.model.currentLevel);
       }
     }
 
-    const startTime = this.model.state.time;
+    const startTime = this.model.currentTime;
 
     level.onAnswer = () => {
-      const stopTime = this.model.state.time;
+      const stopTime = this.model.currentTime;
       const answerTime = stopTime - startTime;
-      const isAnswerCorrect = checkAnswer(level.answer, this.model.getCurrentLevel());
+      const isAnswerCorrect = checkAnswer(level.answer, this.model.currentLevel);
 
-      this.answer({isCorrect: isAnswerCorrect, time: answerTime});
+      this._answer({isCorrect: isAnswerCorrect, time: answerTime});
     };
-    this.game.replaceChild(level.element, this.level.element);
+
+    if (this.level) {
+      this.game.replaceChild(level.element, this.level.element);
+    } else {
+      this.game.appendChild(level.element);
+    }
     this.level = level;
   }
 
-  showResults(result) {
-    const time = this.model.state.time;
+  _showResults(result) {
+    const time = this.model.currentTime;
     const answers = this._statistics;
     App.showResults({time, answers}, result);
   }

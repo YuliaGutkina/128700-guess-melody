@@ -10,6 +10,14 @@ export default class GameModel {
     return Object.freeze(this._state);
   }
 
+  get currentTime() {
+    return this._state.time;
+  }
+
+  get currentLevel() {
+    return this.data[this._state.level];
+  }
+
   hasNextLevel() {
     return this._state.level + 1 < this.data.length;
   }
@@ -36,10 +44,6 @@ export default class GameModel {
 
   timeIsFinishing() {
     return this._state.time > (GAME_TIME - FINISH_TIME);
-  }
-
-  getCurrentLevel() {
-    return this.data[this._state.level];
   }
 
   tick() {
