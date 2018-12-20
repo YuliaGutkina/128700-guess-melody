@@ -16,8 +16,6 @@ export default class WelcomePresenter {
   }
 
   showStart() {
-    setTimeout(() => {
-      this.welcome.element.replaceChild(this.welcome.playBtn, this.welcome.loader);
-    }, 1000);
+    this.welcome.element.replaceChild(this.welcome.playBtn, this.welcome.loader);
   }
 }

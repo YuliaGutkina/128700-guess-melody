@@ -1,8 +1,6 @@
 import AbstractView from "../utils/abstract-view";
 import Player from "../utils/player";
-
-const DEBUG = false;
-const DEBUG_STYLE = `style="background:green;"`;
+import {DEBUG, DEBUG_STYLE} from "../game";
 
 export default class LevelArtistView extends AbstractView {
   constructor(level) {

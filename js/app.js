@@ -11,17 +11,20 @@ let gameData;
 
 export default class App {
 
-  static showWelcome() {
+  static async load() {
     const welcome = new WelcomePresenter();
     changeScreen(welcome.element);
-    Loader.loadData()
-      .then((data) => {
-        gameData = data;
-        return gameData;
-      })
-      .then(() => welcome.showLoader())
-      .catch((err) => App.showError(err))
-      .then(() => welcome.showStart());
+    welcome.showLoader();
+    try {
+      gameData = await Loader.loadData();
+      welcome.showStart();
+    } catch (e) {
+      App.showError(e);
+    }
+  }
+
+  static showWelcome() {
+    App.load();
   }
 
   static showGame() {
@@ -31,7 +34,7 @@ export default class App {
     game.startGame();
   }
 
-  static showResults(stats, result) {
+  static async showResults(stats, result) {
     switch (result) {
       case GameResults.FAIL_TIME:
       case GameResults.FAIL_TRIES: {
@@ -40,13 +43,14 @@ export default class App {
         break;
       }
       case GameResults.SUCCESS: {
-        Loader.saveResults(stats)
-          .then(() => Loader.loadResults())
-          .then((data) => {
-            const results = new ResultsPresenter(GameResults.SUCCESS, stats, data);
-            changeScreen(results.element);
-          })
-          .catch(App.showError);
+        try {
+          await Loader.saveResults(stats);
+          const results = new ResultsPresenter(result, stats, await Loader.loadResults());
+          changeScreen(results.element);
+
+        } catch (e) {
+          App.showError(e);
+        }
       }
     }
   }

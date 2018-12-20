@@ -7,6 +7,9 @@ export const INITIAL_GAME = Object.freeze({
 export const GAME_TIME = 300;
 export const FINISH_TIME = 30;
 
+export const DEBUG = false;
+export const DEBUG_STYLE = `style="background:green;"`;
+
 export const changeLevel = (game, level) => {
   return Object.assign({}, game, {
     level
