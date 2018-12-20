@@ -13,19 +13,11 @@ export default class Player {
     });
   }
 
-  play() {
-    const playPromise = this._audio.play();
-    if (playPromise !== undefined) {
-      playPromise
-        .then(() => {
-          this.playBtn.classList.toggle(`track__button--play`);
-          this.playBtn.classList.toggle(`track__button--pause`);
-          this.isPlaying = !this.isPlaying;
-        })
-        .catch(() => {
-          this._audio.pause();
-        });
-    }
+  async play() {
+    await this._audio.play();
+    this.playBtn.classList.toggle(`track__button--play`);
+    this.playBtn.classList.toggle(`track__button--pause`);
+    this.isPlaying = !this.isPlaying;
   }
 
   pause() {
