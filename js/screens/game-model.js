@@ -1,4 +1,4 @@
-import {changeLevel, die, FINISH_TIME, GAME_TIME, INITIAL_GAME, tick} from "../utils/game-logic";
+import {changeLevel, die, FINISH_TIME, GAME_TIME, INITIAL_GAME, tick} from "../game";
 
 export default class GameModel {
   constructor(data) {

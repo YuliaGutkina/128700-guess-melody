@@ -1,4 +1,5 @@
 import AbstractView from "../abstract-view";
+import convertTime from "../utils/convert-time";
 
 export default class HeaderView extends AbstractView {
   constructor(state) {
@@ -7,6 +8,7 @@ export default class HeaderView extends AbstractView {
   }
 
   get template() {
+    const time = convertTime(this.state.time, true, true);
     return `<header class="game__header">
         <a class="game__back" href="#">
           <span class="visually-hidden">Сыграть ещё раз</span>
@@ -19,9 +21,9 @@ export default class HeaderView extends AbstractView {
         </svg>
   
         <div class="timer__value" xmlns="http://www.w3.org/1999/xhtml">
-          <span class="timer__mins">${this.state.electronicTime.min}</span>
+          <span class="timer__mins">${time.min}</span>
           <span class="timer__dots">:</span>
-          <span class="timer__secs">${this.state.electronicTime.sec}</span>
+          <span class="timer__secs">${time.sec}</span>
         </div>
   
         <div class="game__mistakes">

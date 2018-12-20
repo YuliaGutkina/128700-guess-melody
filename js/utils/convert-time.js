@@ -1,4 +1,9 @@
-const showTime = (time, electronic) => {
+import {GAME_TIME} from "../game";
+
+const convertTime = (time, electronic, countDown) => {
+  if (countDown) {
+    time = GAME_TIME - time;
+  }
   let min = Math.floor(time / 60);
   let sec = time % 60;
   if (electronic) {
@@ -8,4 +13,4 @@ const showTime = (time, electronic) => {
   return {min, sec};
 };
 
-export default showTime;
+export default convertTime;

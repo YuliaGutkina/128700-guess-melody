@@ -3,6 +3,7 @@ import LevelGenreView from "./level-genre-view";
 import App from "../app";
 import {GameResults, LevelType} from "../data/game-data";
 import LevelArtistView from "./level-artist-view";
+import checkAnswer from "../utils/check-answer";
 
 export default class GamePresenter {
   constructor(model) {
@@ -98,28 +99,7 @@ export default class GamePresenter {
     level.onAnswer = () => {
       const stopTime = this.model.state.time;
       const answerTime = stopTime - startTime;
-
-      const compareAnswers = (answer, correctAnswer) => {
-        return answer.every((item, i) => item === correctAnswer[i]);
-      };
-
-      const getCorrectAnswer = (levelQuestion) => {
-        switch (levelQuestion.type) {
-          case LevelType.ARTIST: {
-            return levelQuestion.answers.map((i) => i.isCorrect);
-          }
-          case LevelType.GENRE: {
-            const correctGenre = levelQuestion.genre;
-            return levelQuestion.answers.map((i) => i.genre === correctGenre);
-          }
-          default: {
-            return null;
-          }
-        }
-      };
-
-      const correctAnswer = getCorrectAnswer(this.model.getCurrentLevel());
-      const isAnswerCorrect = compareAnswers(level.answer, correctAnswer);
+      const isAnswerCorrect = checkAnswer(level.answer, this.model.getCurrentLevel());
 
       this.answer({isCorrect: isAnswerCorrect, time: answerTime});
     };
