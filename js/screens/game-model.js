@@ -1,4 +1,4 @@
-import {changeLevel, die, INITIAL_GAME, tick} from "../utils/game-logic";
+import {changeLevel, die, FINISH_TIME, GAME_TIME, INITIAL_GAME, tick} from "../utils/game-logic";
 
 export default class GameModel {
   constructor(data) {
@@ -31,7 +31,11 @@ export default class GameModel {
   }
 
   haveTime() {
-    return this._state.time < 300;
+    return this._state.time < GAME_TIME;
+  }
+
+  timeIsFinishing() {
+    return this._state.time > (GAME_TIME - FINISH_TIME);
   }
 
   getCurrentLevel() {

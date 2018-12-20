@@ -3,12 +3,21 @@ import App from "../app";
 
 export default class WelcomePresenter {
   constructor() {
-    //
+    this.welcome = new WelcomeView();
   }
 
   get element() {
-    const welcome = new WelcomeView();
-    welcome.onPlay = App.showGame;
-    return welcome.element;
+    this.welcome.onPlay = App.showGame;
+    return this.welcome.element;
+  }
+
+  showLoader() {
+    this.welcome.element.replaceChild(this.welcome.loader, this.welcome.playBtn);
+  }
+
+  showStart() {
+    setTimeout(() => {
+      this.welcome.element.replaceChild(this.welcome.playBtn, this.welcome.loader);
+    }, 1000);
   }
 }

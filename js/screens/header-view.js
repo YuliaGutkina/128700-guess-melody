@@ -19,9 +19,9 @@ export default class HeaderView extends AbstractView {
         </svg>
   
         <div class="timer__value" xmlns="http://www.w3.org/1999/xhtml">
-          <!--<span class="timer__mins">05</span>-->
-          <!--<span class="timer__dots">:</span>-->
-          <span class="timer__secs">${this.state.time}</span>
+          <span class="timer__mins">${this.state.electronicTime.min}</span>
+          <span class="timer__dots">:</span>
+          <span class="timer__secs">${this.state.electronicTime.sec}</span>
         </div>
   
         <div class="game__mistakes">
@@ -35,5 +35,6 @@ export default class HeaderView extends AbstractView {
   bind() {
     this._replayBtn = this.element.querySelector(`.game__back`);
     this._replayBtn.addEventListener(`click`, this.onReplay);
+    this.timer = this.element.querySelector(`.timer__value`);
   }
 }

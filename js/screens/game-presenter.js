@@ -1,13 +1,14 @@
 import HeaderView from "./header-view";
-import LevelView from "./level-view";
+import LevelGenreView from "./level-genre-view";
 import App from "../app";
-import {QuestionType} from "../data/game-data";
+import {GameResults, LevelType} from "../data/game-data";
+import LevelArtistView from "./level-artist-view";
 
 export default class GamePresenter {
   constructor(model) {
     this.model = model;
     this.header = new HeaderView(this.model.state);
-    this.level = new LevelView(this.model.getCurrentLevel());
+    this.level = new LevelGenreView(this.model.getCurrentLevel());
     this.game = document.createElement(`section`);
     this.game.classList.add(`game`);
     this.game.appendChild(this.header.element);
@@ -28,10 +29,13 @@ export default class GamePresenter {
   _tick() {
     if (!this.model.haveTime()) {
       this.stopGame();
-      this.showResults();
+      this.showResults(GameResults.FAIL_TIME);
     } else {
       this.model.tick();
       this.updateHeader();
+      if (this.model.timeIsFinishing()) {
+        this.header.timer.classList.add(`timer__value--finished`);
+      }
       this._timer = setTimeout(() => this._tick(), 1000);
     }
   }
@@ -50,14 +54,14 @@ export default class GamePresenter {
         this.model.nextLevel();
         this.startGame();
       } else {
-        this.showResults();
+        this.showResults(GameResults.SUCCESS);
       }
     } else {
       this.model.die();
       this._statistics.push(-1);
       this.updateHeader();
       if (!this.model.stillAlive()) {
-        this.showResults();
+        this.showResults(GameResults.FAIL_TRIES);
       } else {
         this.model.nextLevel();
         this.startGame();
@@ -75,7 +79,20 @@ export default class GamePresenter {
   changeLevel() {
     this.updateHeader();
 
-    const level = new LevelView(this.model.getCurrentLevel());
+    const levelType = this.model.getCurrentLevel().type;
+
+    let level;
+
+    switch (levelType) {
+      case LevelType.GENRE: {
+        level = new LevelGenreView(this.model.getCurrentLevel());
+        break;
+      }
+      case LevelType.ARTIST: {
+        level = new LevelArtistView(this.model.getCurrentLevel());
+      }
+    }
+
     const startTime = this.model.state.time;
 
     level.onAnswer = () => {
@@ -88,10 +105,10 @@ export default class GamePresenter {
 
       const getCorrectAnswer = (levelQuestion) => {
         switch (levelQuestion.type) {
-          case QuestionType.ARTIST: {
+          case LevelType.ARTIST: {
             return levelQuestion.answers.map((i) => i.isCorrect);
           }
-          case QuestionType.GENRE: {
+          case LevelType.GENRE: {
             const correctGenre = levelQuestion.genre;
             return levelQuestion.answers.map((i) => i.genre === correctGenre);
           }
@@ -110,7 +127,9 @@ export default class GamePresenter {
     this.level = level;
   }
 
-  showResults() {
-    App.showResults(this._statistics);
+  showResults(result) {
+    const time = this.model.state.time;
+    const answers = this._statistics;
+    App.showResults({time, answers}, result);
   }
 }
