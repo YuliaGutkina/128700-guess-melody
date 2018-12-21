@@ -4,6 +4,7 @@ import App from "../app";
 import {GameResults, LevelType} from "../data/game-data";
 import LevelArtistView from "./level-artist-view";
 import checkAnswer from "../utils/check-answer";
+import {FAIL_ANSWER, ONE_SECOND} from "../game";
 
 export default class GamePresenter {
   constructor(model) {
@@ -35,7 +36,7 @@ export default class GamePresenter {
       if (this.model.timeIsFinishing()) {
         this.header.timer.classList.add(`timer__value--finished`);
       }
-      this._timer = setTimeout(() => this._tick(), 1000);
+      this._timer = setTimeout(() => this._tick(), ONE_SECOND);
     }
   }
 
@@ -57,7 +58,7 @@ export default class GamePresenter {
       }
     } else {
       this.model.die();
-      this._statistics.push(-1);
+      this._statistics.push(FAIL_ANSWER);
       this._updateHeader();
       if (!this.model.stillAlive()) {
         this._showResults(GameResults.FAIL_TRIES);

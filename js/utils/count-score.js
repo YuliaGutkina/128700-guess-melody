@@ -1,15 +1,14 @@
-const countScore = (array) => {
+import {FAIL_ANSWER, SLOW_ANSWER} from "../game";
+
+const countScore = (answers) => {
   let counter = 0;
 
-  if (array.length < 10 || array.filter((item) => item === -1).length > 3) {
-    return -1;
-  }
-  for (const item of array) {
-    if (item !== -1 && item >= 30) {
+  for (const item of answers) {
+    if (item !== FAIL_ANSWER && item >= SLOW_ANSWER) {
       counter++;
-    } else if (item !== -1 && item < 30) {
+    } else if (item !== FAIL_ANSWER && item < SLOW_ANSWER) {
       counter += 2;
-    } else if (item === -1) {
+    } else if (item === FAIL_ANSWER) {
       counter -= 2;
     }
   }

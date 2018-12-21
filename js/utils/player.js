@@ -1,29 +1,29 @@
 export default class Player {
   constructor(track) {
     this.track = track;
-    this.isPlaying = false;
     this.playButton = this.track.querySelector(`.track__button`);
     this._audio = this.track.querySelector(`audio`);
-    this.playButton.addEventListener(`click`, () => {
-      if (this.isPlaying) {
-        this.pause();
-      } else {
-        this.play();
-      }
-    });
   }
 
-  async play() {
-    await this._audio.play();
-    this.playButton.classList.toggle(`track__button--play`);
-    this.playButton.classList.toggle(`track__button--pause`);
-    this.isPlaying = !this.isPlaying;
+  toggle() {
+    return (this.isPlaying) ? this.pause() : this.play();
+  }
+
+  play() {
+    if (!this.isPlaying) {
+      this._audio.play();
+      this.playButton.classList.toggle(`track__button--play`);
+      this.playButton.classList.toggle(`track__button--pause`);
+      this.isPlaying = true;
+    }
   }
 
   pause() {
-    this._audio.pause();
-    this.playButton.classList.toggle(`track__button--play`);
-    this.playButton.classList.toggle(`track__button--pause`);
-    this.isPlaying = !this.isPlaying;
+    if (this.isPlaying) {
+      this._audio.pause();
+      this.playButton.classList.toggle(`track__button--play`);
+      this.playButton.classList.toggle(`track__button--pause`);
+      this.isPlaying = false;
+    }
   }
 }

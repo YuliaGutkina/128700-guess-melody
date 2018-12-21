@@ -1,6 +1,7 @@
 import countScore from "./count-score";
 import {GameResults} from "../data/game-data";
 import convertTime from "./convert-time";
+import {FAIL_ANSWER, SLOW_ANSWER} from "../game";
 
 const getResults = (result, stats, data) => {
   switch (result) {
@@ -12,8 +13,8 @@ const getResults = (result, stats, data) => {
       const players = statistics.length;
       const success = Math.floor((players - place) / players * 100);
       const time = convertTime(stats.time);
-      const quickAnswers = stats.answers.filter((item) => (item < 30 && item !== -1)).length;
-      const mistakes = stats.answers.filter((item) => item === -1).length;
+      const quickAnswers = stats.answers.filter((item) => (item < SLOW_ANSWER && item !== FAIL_ANSWER)).length;
+      const mistakes = stats.answers.filter((item) => item === FAIL_ANSWER).length;
       return {
         title: `Вы настоящий меломан!`,
         total: `За ${time.min} минуты и ${time.sec} секунд вы набрали ${score} баллов (${quickAnswers} быстрых), совершив ${mistakes} ошибки`,

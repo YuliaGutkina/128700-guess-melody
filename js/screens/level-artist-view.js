@@ -36,6 +36,15 @@ export default class LevelArtistView extends AbstractView {
     this._track = this.element.querySelector(`.game__track`);
 
     this._player = new Player(this._track);
+
+    this._player.playButton.addEventListener(`click`, () => {
+      if (!this._player.isPlaying) {
+        this._player.play();
+      } else {
+        this._player.pause();
+      }
+    });
+
     this._player.play();
 
     for (const radio of this._radioButtons) {

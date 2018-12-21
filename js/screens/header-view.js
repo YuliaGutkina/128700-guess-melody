@@ -1,5 +1,6 @@
 import AbstractView from "../utils/abstract-view";
 import convertTime from "../utils/convert-time";
+import {INITIAL_GAME} from "../game";
 
 export default class HeaderView extends AbstractView {
   constructor(state) {
@@ -27,7 +28,7 @@ export default class HeaderView extends AbstractView {
         </div>
   
         <div class="game__mistakes">
-          ${new Array(3 - this.state.lives).fill(`<div class="wrong"></div>`).join(``)}
+          ${new Array(INITIAL_GAME.lives - this.state.lives).fill(`<div class="wrong"></div>`).join(``)}
         </div>
       </header>`;
   }
