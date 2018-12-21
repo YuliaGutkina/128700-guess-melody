@@ -31,22 +31,22 @@ export default class LevelGenreView extends AbstractView {
   onAnswer() {}
 
   bind() {
-    this._submitBtn = this.element.querySelector(`.game__submit`);
-    this._submitBtn.disabled = true;
+    this._submitButton = this.element.querySelector(`.game__submit`);
+    this._submitButton.disabled = true;
     this._checkboxes = Array.from(this.element.querySelectorAll(`.game__input`));
     this._tracks = Array.from(this.element.querySelectorAll(`.track`));
-    this._allPlayBtns = Array.from(this.element.querySelectorAll(`.track__button`));
+    this._allPlayButtons = Array.from(this.element.querySelectorAll(`.track__button`));
 
-    for (const item of this._checkboxes) {
-      item.addEventListener(`change`, () => {
-        this._submitBtn.disabled = !this._checkboxes.some((i) => i.checked);
+    for (const checkbox of this._checkboxes) {
+      checkbox.addEventListener(`change`, () => {
+        this._submitButton.disabled = !this._checkboxes.some((item) => item.checked);
       });
     }
 
     this._players = this._tracks.map((track) => new Player(track));
 
-    this._allPlayBtns.forEach((btn, i) => {
-      btn.addEventListener(`click`, () => {
+    this._allPlayButtons.forEach((button, i) => {
+      button.addEventListener(`click`, () => {
         this._players.forEach((player, j) => {
           if (i !== j && player.isPlaying) {
             player.pause();
@@ -57,9 +57,9 @@ export default class LevelGenreView extends AbstractView {
 
     this._players[0].play();
 
-    this._submitBtn.addEventListener(`click`, (e) => {
-      e.preventDefault();
-      this.answer = this._checkboxes.map((i) => i.checked);
+    this._submitButton.addEventListener(`click`, (event) => {
+      event.preventDefault();
+      this.answer = this._checkboxes.map((item) => item.checked);
 
       this.onAnswer();
     });

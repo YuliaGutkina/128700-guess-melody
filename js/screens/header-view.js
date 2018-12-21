@@ -35,8 +35,8 @@ export default class HeaderView extends AbstractView {
   onReplay() {}
 
   bind() {
-    this._replayBtn = this.element.querySelector(`.game__back`);
-    this._replayBtn.addEventListener(`click`, this.onReplay);
+    this._replayButton = this.element.querySelector(`.game__back`);
+    this._replayButton.addEventListener(`click`, this.onReplay);
     this.timer = this.element.querySelector(`.timer__value`);
   }
 }

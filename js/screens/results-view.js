@@ -20,7 +20,7 @@ export default class ResultsView extends AbstractView {
   onReplay() {}
 
   bind() {
-    this._replayBtn = this.element.querySelector(`.result__replay`);
-    this._replayBtn.addEventListener(`click`, this.onReplay);
+    this._replayButton = this.element.querySelector(`.result__replay`);
+    this._replayButton.addEventListener(`click`, this.onReplay);
   }
 }
