@@ -5,25 +5,23 @@ export default class Player {
     this._audio = this.track.querySelector(`audio`);
   }
 
-  toggle() {
-    return (this.isPlaying) ? this.pause() : this.play();
+  _toggle() {
+    this.playButton.classList.toggle(`track__button--play`);
+    this.playButton.classList.toggle(`track__button--pause`);
+    this.isPlaying = !this.isPlaying;
   }
 
   play() {
     if (!this.isPlaying) {
       this._audio.play();
-      this.playButton.classList.toggle(`track__button--play`);
-      this.playButton.classList.toggle(`track__button--pause`);
-      this.isPlaying = true;
+      this._toggle();
     }
   }
 
   pause() {
     if (this.isPlaying) {
       this._audio.pause();
-      this.playButton.classList.toggle(`track__button--play`);
-      this.playButton.classList.toggle(`track__button--pause`);
-      this.isPlaying = false;
+      this._toggle();
     }
   }
 }
