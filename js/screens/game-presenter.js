@@ -4,6 +4,8 @@ import App from "../app";
 import {GameResults, LevelType} from "../data/game-data";
 import LevelArtistView from "./level-artist-view";
 import checkAnswer from "../utils/check-answer";
+import {FAIL_ANSWER, ONE_SECOND} from "../game";
+import ConfirmationView from "./confirmation-view";
 
 export default class GamePresenter {
   constructor(model) {
@@ -30,12 +32,12 @@ export default class GamePresenter {
       this._stopGame();
       this._showResults(GameResults.FAIL_TIME);
     } else {
-      this.model.tick();
       this._updateHeader();
+      this.model.tick();
       if (this.model.timeIsFinishing()) {
         this.header.timer.classList.add(`timer__value--finished`);
       }
-      this._timer = setTimeout(() => this._tick(), 1000);
+      this._timer = setTimeout(() => this._tick(), ONE_SECOND);
     }
   }
 
@@ -49,30 +51,44 @@ export default class GamePresenter {
     this._stopGame();
     if (answer.isCorrect) {
       this._statistics.push(answer.time);
-      if (this.model.hasNextLevel()) {
-        this.model.nextLevel();
-        this.startGame();
-      } else {
-        this._showResults(GameResults.SUCCESS);
-      }
     } else {
       this.model.die();
-      this._statistics.push(-1);
+      this._statistics.push(FAIL_ANSWER);
       this._updateHeader();
-      if (!this.model.stillAlive()) {
-        this._showResults(GameResults.FAIL_TRIES);
-      } else {
-        this.model.nextLevel();
-        this.startGame();
-      }
     }
+    if (!this.model.stillAlive()) {
+      this._showResults(GameResults.FAIL_TRIES);
+      return;
+    }
+    if (!this.model.hasNextLevel()) {
+      this._showResults(GameResults.SUCCESS);
+      return;
+    }
+    this.model.nextLevel();
+    this.startGame();
   }
 
   _updateHeader() {
     const header = new HeaderView(this.model.state);
-    header.onReplay = App.showWelcome;
+    header.onReplay = () => {
+      if (!this._isConfirmationShown) {
+        this._showConfirmation();
+      }
+    };
     this.game.replaceChild(header.element, this.header.element);
     this.header = header;
+  }
+
+  _showConfirmation() {
+    this._isConfirmationShown = true;
+    const confirmation = new ConfirmationView();
+    confirmation.onConfirm = App.showWelcome;
+    confirmation.onCancel = () => {
+      this.game.removeChild(confirmation.element);
+      this._isConfirmationShown = false;
+    };
+    this.game.appendChild(confirmation.element);
+    confirmation.closeButton.focus();
   }
 
   _showLevel() {

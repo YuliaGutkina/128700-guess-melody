@@ -18,8 +18,8 @@ export default class App {
     try {
       gameData = await Loader.loadData();
       welcome.showStart();
-    } catch (e) {
-      App.showError(e);
+    } catch (error) {
+      App.showError(error);
     }
   }
 
@@ -48,15 +48,15 @@ export default class App {
           const results = new ResultsPresenter(result, stats, await Loader.loadResults());
           changeScreen(results.element);
 
-        } catch (e) {
-          App.showError(e);
+        } catch (error) {
+          App.showError(error);
         }
       }
     }
   }
 
-  static showError(err) {
-    const error = new ErrorView(err);
-    changeScreen(error.element);
+  static showError(error) {
+    const errorView = new ErrorView(error);
+    changeScreen(errorView.element);
   }
 }

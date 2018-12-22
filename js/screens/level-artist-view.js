@@ -32,15 +32,24 @@ export default class LevelArtistView extends AbstractView {
   onAnswer() {}
 
   bind() {
-    this._radioBtns = Array.from(this.element.querySelectorAll(`.artist__input`));
+    this._radioButtons = Array.from(this.element.querySelectorAll(`.artist__input`));
     this._track = this.element.querySelector(`.game__track`);
 
     this._player = new Player(this._track);
+
+    this._player.playButton.addEventListener(`click`, () => {
+      if (!this._player.isPlaying) {
+        this._player.play();
+      } else {
+        this._player.pause();
+      }
+    });
+
     this._player.play();
 
-    for (const radio of this._radioBtns) {
+    for (const radio of this._radioButtons) {
       radio.addEventListener(`change`, () => {
-        this.answer = this._radioBtns.map((i) => i.checked);
+        this.answer = this._radioButtons.map((item) => item.checked);
         this.onAnswer();
       });
     }

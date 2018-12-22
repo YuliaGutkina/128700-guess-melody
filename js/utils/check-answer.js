@@ -3,10 +3,10 @@ import {LevelType} from "../data/game-data";
 const getCorrectAnswer = (level) => {
   switch (level.type) {
     case LevelType.ARTIST: {
-      return level.answers.map((i) => i.isCorrect);
+      return level.answers.map((item) => item.isCorrect);
     }
     case LevelType.GENRE: {
-      return level.answers.map((i) => i.genre === level.genre);
+      return level.answers.map((item) => item.genre === level.genre);
     }
     default: {
       return new Error(`${level.type} level type is not exist`);

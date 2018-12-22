@@ -12,10 +12,10 @@ export default class WelcomePresenter {
   }
 
   showLoader() {
-    this.welcome.element.replaceChild(this.welcome.loader, this.welcome.playBtn);
+    this.welcome.element.replaceChild(this.welcome.loader, this.welcome.playButton);
   }
 
   showStart() {
-    this.welcome.element.replaceChild(this.welcome.playBtn, this.welcome.loader);
+    this.welcome.element.replaceChild(this.welcome.playButton, this.welcome.loader);
   }
 }
