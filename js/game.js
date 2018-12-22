@@ -15,6 +15,8 @@ export const FAIL_ANSWER = -1;
 export const DEBUG = true;
 export const DEBUG_STYLE = `style="background:green;"`;
 
+export const ESC_KEY = 27;
+
 export const changeLevel = (game, level) => {
   return Object.assign({}, game, {
     level

@@ -5,7 +5,7 @@ import {GameResults, LevelType} from "../data/game-data";
 import LevelArtistView from "./level-artist-view";
 import checkAnswer from "../utils/check-answer";
 import {FAIL_ANSWER, ONE_SECOND} from "../game";
-import convertTime from "../utils/convert-time";
+import ConfirmationView from "./confirmation-view";
 
 export default class GamePresenter {
   constructor(model) {
@@ -28,7 +28,6 @@ export default class GamePresenter {
   }
 
   _tick() {
-    console.log(convertTime(this.model.currentTime, true, true).sec);
     if (!this.model.haveTime()) {
       this._stopGame();
       this._showResults(GameResults.FAIL_TIME);
@@ -71,9 +70,25 @@ export default class GamePresenter {
 
   _updateHeader() {
     const header = new HeaderView(this.model.state);
-    header.onReplay = App.showWelcome;
+    header.onReplay = () => {
+      if (!this._isConfirmationShown) {
+        this._showConfirmation();
+      }
+    };
     this.game.replaceChild(header.element, this.header.element);
     this.header = header;
+  }
+
+  _showConfirmation() {
+    this._isConfirmationShown = true;
+    const confirmation = new ConfirmationView();
+    confirmation.onConfirm = App.showWelcome;
+    confirmation.onCancel = () => {
+      this.game.removeChild(confirmation.element);
+      this._isConfirmationShown = false;
+    };
+    this.game.appendChild(confirmation.element);
+    confirmation.closeButton.focus();
   }
 
   _showLevel() {
