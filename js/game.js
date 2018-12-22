@@ -12,7 +12,7 @@ export const ONE_SECOND = 1000;
 export const SLOW_ANSWER = 30;
 export const FAIL_ANSWER = -1;
 
-export const DEBUG = true;
+export const DEBUG = false;
 export const DEBUG_STYLE = `style="background:green;"`;
 
 export const ESC_KEY = 27;
