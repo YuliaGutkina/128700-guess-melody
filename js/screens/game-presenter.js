@@ -5,6 +5,7 @@ import {GameResults, LevelType} from "../data/game-data";
 import LevelArtistView from "./level-artist-view";
 import checkAnswer from "../utils/check-answer";
 import {FAIL_ANSWER, ONE_SECOND} from "../game";
+import convertTime from "../utils/convert-time";
 
 export default class GamePresenter {
   constructor(model) {
@@ -27,12 +28,13 @@ export default class GamePresenter {
   }
 
   _tick() {
+    console.log(convertTime(this.model.currentTime, true, true).sec);
     if (!this.model.haveTime()) {
       this._stopGame();
       this._showResults(GameResults.FAIL_TIME);
     } else {
-      this.model.tick();
       this._updateHeader();
+      this.model.tick();
       if (this.model.timeIsFinishing()) {
         this.header.timer.classList.add(`timer__value--finished`);
       }
