@@ -50,23 +50,21 @@ export default class GamePresenter {
     this._stopGame();
     if (answer.isCorrect) {
       this._statistics.push(answer.time);
-      if (this.model.hasNextLevel()) {
-        this.model.nextLevel();
-        this.startGame();
-      } else {
-        this._showResults(GameResults.SUCCESS);
-      }
     } else {
       this.model.die();
       this._statistics.push(FAIL_ANSWER);
       this._updateHeader();
-      if (!this.model.stillAlive()) {
-        this._showResults(GameResults.FAIL_TRIES);
-      } else {
-        this.model.nextLevel();
-        this.startGame();
-      }
     }
+    if (!this.model.stillAlive()) {
+      this._showResults(GameResults.FAIL_TRIES);
+      return;
+    }
+    if (!this.model.hasNextLevel()) {
+      this._showResults(GameResults.SUCCESS);
+      return;
+    }
+    this.model.nextLevel();
+    this.startGame();
   }
 
   _updateHeader() {
